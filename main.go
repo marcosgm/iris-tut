@@ -6,15 +6,16 @@ import "github.com/kataras/iris/v12"
 type Book struct {
 	Title  string `json:"title"`
 	Author string `json:"author"`
+	Genre  string `json:"genre"`
 }
 
 var books []Book
 
 func init() {
 	books = []Book{
-		{"IT", "Stephen King"},
-		{"Game of Thrones", "George RR Martin"},
-		{"The lord of the rings", "JRR Tolkien"},
+		{"IT", "Stephen King", "horror"},
+		{"Game of Thrones", "George RR Martin", "fantasy"},
+		{"The lord of the rings", "JRR Tolkien", "fantasy"},
 	}
 }
 
@@ -83,9 +84,9 @@ func create(ctx iris.Context) {
 		return
 	}
 
-	println("Received Book: " + b.Title + " by " + b.Author)
+	println("Received Book: " + b.Title + " by " + b.Author + "type " + b.Genre)
 	books = append(books, b)
 	ctx.StatusCode(iris.StatusCreated)
 }
 
-// curl -i -X POST --header 'Content-Type:application/json' --data "{\"title\":\"New Book\",\"author\":\"New Author\"}" http://localhost:8080/books
+// curl -i -X POST --header 'Content-Type:application/json' --data "{\"title\":\"New Book\",\"author\":\"New Author\",\"genre\":\"Fiction\"}" http://localhost:8080/books

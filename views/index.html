@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" href="favicon.ico" type="image/x-icon">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bookstore</title>
@@ -22,25 +21,102 @@
     text-align: center;
     margin-bottom: 20px;
   }
-  ul {
-    list-style-type: none;
-    padding: 0;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid grey;
   }
-  li {
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid grey;
+  }
+  th {
+    background-color: #333;
+    color: white;
+  }
+  form {
+    margin-top: 20px;
+  }
+  .form-input {
+    display: block;
     margin-bottom: 10px;
+    width: 90%;
+    padding: 5px;
+  }
+  .form-button {
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to Our Bookstore</h1>
-    <ul>
-      {% for book in books %}
-      <li><strong>Title:</strong> {{ book.Title }}</li>
-      <li><strong>Author:</strong> {{ book.Author }}</li>
-      <p></p><p></p>
-      {% endfor %}
-    </ul>
+    <h2>List of books</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <td>{{ book.Title }}</td>
+          <td>{{ book.Author }}</td>
+          <td>{{ book.Genre }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Add a new book</h2>
+    <form id="addBookForm" method="post">
+    <button class="form-button" type="submit">Add Book</button>
+    <table>    
+      <tbody>
+        <tr>
+          <td><input class="form-input" type="text" name="title" placeholder="Title" required></td>
+          <td><input class="form-input" type="text" name="author" placeholder="Author" required></td>
+          <td><input class="form-input" type="text" name="genre" placeholder="Genre" required></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+    
+    
   </div>
+  <script>
+    const form = document.getElementById('addBookForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const jsonData = {};
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+      const response = await fetch('/books', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),
+      });
+      if (response.ok) {
+        // Handle success, maybe update the book list
+        console.log('Book added successfully');
+        location.reload()
+      } else {
+        // Handle error
+        console.error('Error adding book');
+      }
+    });
+  </script>
 </body>
 </html>
