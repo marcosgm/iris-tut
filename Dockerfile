@@ -6,9 +6,11 @@ COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY *.go assets views ./
+COPY *.go ./
+ADD assets ./assets
+ADD views ./views
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /bookstore-webserver
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./bookstore-webserver
 
 
 EXPOSE 8080
