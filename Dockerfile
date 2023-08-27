@@ -10,7 +10,7 @@ COPY *.go ./
 ADD assets ./assets
 ADD views ./views
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /bookstore-webserver
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -o /bookstore-webserver
 
 
 EXPOSE 8080
@@ -18,5 +18,6 @@ EXPOSE 8080
 # Run
 CMD ["/bookstore-webserver"]
 
-
+#az acr create --resource-group myResourceGroup --name prephcpregistry --sku
+#az acr update --name prephcpregistry  --anonymous-pull-enabled
 #az acr build --image prephcr/bookstore-webserver:v1 --resource-group myResourceGroup --registry prephcpregistry  --file Dockerfile . 
