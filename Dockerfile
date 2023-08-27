@@ -10,7 +10,7 @@ COPY *.go ./
 ADD assets ./assets
 ADD views ./views
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./bookstore-webserver
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bookstore-webserver
 
 
 EXPOSE 8080
