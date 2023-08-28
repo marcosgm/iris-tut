@@ -1,6 +1,11 @@
 package main
 
-import "github.com/kataras/iris/v12"
+import (
+	"fmt"
+	"os"
+
+	"github.com/kataras/iris/v12"
+)
 
 // Book example.
 type Book struct {
@@ -10,12 +15,21 @@ type Book struct {
 }
 
 var books []Book
+var bookstore_title string
 
 func init() {
 	books = []Book{
 		{"IT", "Stephen King", "horror"},
 		{"Game of Thrones", "George RR Martin", "fantasy"},
 		{"The lord of the rings", "JRR Tolkien", "fantasy"},
+	}
+	bookstore_title = os.Getenv("bookstore_title")
+	bookstore_title, ok := os.LookupEnv("bookstore_title")
+	if !ok {
+		fmt.Println("bookstore_title env var is not present, setting to Default")
+		bookstore_title = "Generic Bookstore"
+	} else {
+		fmt.Printf("Bookstore title is: %s\n", bookstore_title)
 	}
 }
 
@@ -53,9 +67,10 @@ func index(ctx iris.Context) {
 	// iris.Map/pongo2.Context/map[string]interface{}, look below:
 
 	if err := ctx.View("index.html", iris.Map{
-		"title": "Welcome Page",
-		"name":  "iris Tut",
-		"books": books,
+		"title":           "Welcome Page",
+		"name":            "iris Tut",
+		"books":           books,
+		"bookstore_title": bookstore_title,
 	}); err != nil {
 		ctx.HTML("<h3>%s</h3>", err.Error())
 		return

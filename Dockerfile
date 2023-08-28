@@ -15,8 +15,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -o /bookstore-webserver
 
 EXPOSE 8080
 
+#ENV bookstore_title="Generic Bookstore" #set this at runtime
+
 # Run
-CMD ["/bookstore-webserver"]
+CMD ["/bookstore-webserver",]
 
 #az acr create --resource-group myResourceGroup --name prephcpregistry --sku
 #az acr update --name prephcpregistry  --anonymous-pull-enabled
