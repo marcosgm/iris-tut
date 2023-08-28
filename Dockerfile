@@ -18,8 +18,9 @@ EXPOSE 8080
 #ENV bookstore_title="Generic Bookstore" #set this at runtime
 
 # Run
-CMD ["/bookstore-webserver",]
+CMD ["/bookstore-webserver"]
 
-#az acr create --resource-group myResourceGroup --name prephcpregistry --sku
+#az group create -g acr-rg -l canadacentral
+#az acr create --resource-group acr-rg --name prephcpregistry --sku Standard
 #az acr update --name prephcpregistry  --anonymous-pull-enabled
-#az acr build --image prephcr/bookstore-webserver:v1 --resource-group myResourceGroup --registry prephcpregistry  --file Dockerfile . 
+#az acr build --image prephcr/bookstore-webserver:v1 --resource-group acr-rg --registry prephcpregistry  --file Dockerfile . 
